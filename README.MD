@@ -48,6 +48,8 @@ Usage
 * Using the Arduino IDE upload the sketch: C64_keyboard.ino : into your Arduino.
 
 
+
+
 !!!POWER REQUIREMENTS!!!!
 -------------------------
 
@@ -68,6 +70,37 @@ Usage
 
 
 	
+Version 0.8
+-----------
+* Still Early release version!
+
+* Defines are now in the c64keyboard header file. The Arduino project file is now empty except to start the interrupt service.
+
+* All pins and special keys are defined instead of direct values with the exception of shift, key break and caps lock as they should never need to be changed.
+
+* Keyboard maps are now in a separate header file: keymapping.h
+
+* Up to 3 key maps can be stored and hot swapped with assigned keys (Default F9-F11)
+
+* First wave of code cleanup is done 
+
+* Default key map almost finished, with just a couple of problem keys remaining.
+
+* KEYBIN file has been improved and released in a plain text version
+	
+TODO:
+
+- Implement Extended key code support if needed/desired.
+
+- Add USB support. This should be simple, not even requiring interrupt service. It appears mostly to be converting USB scan codes.
+
+- Write function to turn keyboard LEDs on/off, mostly for Caps lock. Thinking about blinking scroll lock LED to reflect selected key map when changed.
+
+- Release schematic for shield board.
+
+
+
+
 Version 0.5
 -----------
 

@@ -30,71 +30,11 @@
 
 #define BUFFER_SIZE 45
 static volatile uint8_t buffer[BUFFER_SIZE];
-static volatile uint8_t head, tail,keystate;
+static volatile uint8_t head, tail,keystate, currkeymap = 1;
 
-static uint8_t DataPin;
+static uint8_t data_pin, irq_pin;
 static const PS2Keymap_t *keymap=NULL;
-#define ANALOG_SW_DATA         13
-#define ANALOG_SW_STROBE       4
-#define ANALOG_SW_RESET        2
-#define ANALOG_SW_ARRAY_START  5
-#define ANALOG_SW_ARRAY_END    10
-#define RESTORE_KEY            0x0D //Tab acts as Restore key
-#define MT_RESET               0x07 //F12 activates MT88XX reset
 
-
-const PROGMEM PS2Keymap_t PS2Keymap_US = {
-  // without shift
-   {  170,  170,  170,  3,  5,  1,  170,  170,
-	  170,  170,  170,  170,  170, 30,  170,  170,
-	  170,  170, 39,  170,  170, 59, 56,  170,
-	  170,  170, 33, 37, 34, 36, 62,  170,
-	  170, 17, 23, 18, 35, 38, 32,  170,
-	  170, 57, 55, 21, 19, 20, 16,  170,
-	  170, 15, 49, 53, 50, 52, 22,  170,
-	  170,  170,  9, 10, 51, 48, 54,  170,
-	  170, 47, 13, 12, 11, 14,  8,  170,
-	  170, 41, 31, 42, 26, 44, 46,  170,
-	  170,  170,  170,  170,  170, 29,  170,  170,
-	  170, 25,  4,  170, 170,   170,  170,  170,
-	  170,  170,  170,  170,  170,  170,  0,  170,
-	  170, 56,  170, 38, 48,  170,  170,  170,
-	  14, 41, 7, 16, 2, 54,  63,  170,
-	  170, 40, 170,   170,  170,  170,  170,  170,
-	  170,  170,  170,  170},
-  // with shift
-	{  170,  170,  170,  3,  5,  1,  170,  170,
-	  170,  170,  170,  170,  170, 30,  170,  170,
-	  170,  170, 39,  170,  170, 59, 56,  170,
-	  170,  170, 33, 37, 34, 36, 62,  170,
-	  170, 17, 23, 18, 35, 38, 32,  170,
-	  170, 57, 55, 21, 19, 20, 16,  170,
-	  170, 15, 49, 53, 50, 52, 22,  170,
-	  170,  170,  9, 10, 51, 48, 54,  170,
-	  170, 47, 13, 12, 11, 14,  8,  170,
-	  170, 41, 31, 42, 26, 44, 46,  170,
-	  170,  170,  170,  170,  170, 103,  170,  170,
-	  170, 25,  4,  170, 170,   170,  170,  170,
-	  170,  170,  170,  170,  170,  170,  0,  170,
-	  170, 56,  170, 38, 48,  170,  170,  170,
-	  14, 41, 7, 16, 2, 54,  63,  170,
-	  170, 40, 170,   170,  170,  170,  170,  170,
-	  170,  170,  170,  170},
-	
-};
-
-static inline uint8_t get_scan_code(void)
-{
-	uint8_t c, i;
-
-	i = tail;
-	if (i == head) return 0;
-	i++;
-	if (i >= BUFFER_SIZE) i = 0;
-	c = buffer[i];
-	tail = i;
-	return c;
-}
 
 
 
@@ -103,6 +43,14 @@ C64keyboard::C64keyboard() {
 }
 
 
+/* setswitch function programs the MT88xx chip by bit reading the passed key map byte
+The X12/13 logic hole is converted to X6/7 when needed.
+
+The millisecond (1000 Microseconds) delay is for hysteresis.
+ 
+The delayMicroseconds function is used because this will always be running inside an interrupt and
+the delay (Millisecond) function cannot be run inside an interrupt.
+*/ 
 void setswitch(uint8_t c){
 	int bitr;
 	bool state;
@@ -110,7 +58,7 @@ void setswitch(uint8_t c){
 	// Convert x12 & x13 to x6 & x7. Pin 11 is AX3
 	if( (c > 55 && c < 64) || (c > 23 && c < 32 )){
 		c -= 24;
-		digitalWrite(11,HIGH);
+		digitalWrite(ANALOG_SW_AX3,HIGH);
 		}
 		
 
@@ -123,31 +71,44 @@ void setswitch(uint8_t c){
 		digitalWrite( ANALOG_SW_STROBE, HIGH);
 		digitalWrite( ANALOG_SW_STROBE, LOW);
 		}
-	digitalWrite(11,LOW);
+	digitalWrite(ANALOG_SW_AX3,LOW);
 	delayMicroseconds(1000);
 	
 }
 
-
-void c64key(uint8_t k,byte ks)
-{
+/* c64key converts the scan code to key map code.
+// The shift differential process is also performed.
+// Add 64 to value in key-map if key needs not logic applied to shift states.
+*/
+void c64key(uint8_t k){
 		byte c = 0;
 	
-		if(bitRead(ks,1) || bitRead(ks,2)){c = pgm_read_byte(keymap->shift + k);}
-			
-		else {c = pgm_read_byte(keymap->noshift + k);}
+		if (currkeymap == 2){
+				if(bitRead(keystate,1) || bitRead(keystate,2)){c = pgm_read_byte(keymap->shift_2 + k);}
+				else {c = pgm_read_byte(keymap->noshift_2 + k);}
+			 }
 		
-		// Keymap code 170 (0xAA) is for ignored keys
-		if (c != 170){
-			// Differential shift conversion
-			// Add 63 to value in key-map if key needs shift not logic
-			if (c > 63  && digitalRead(ANALOG_SW_DATA)){
-				c -= 63;
-				if bitRead(ks,2){
+		else if (currkeymap == 3){
+				if(bitRead(keystate,1) || bitRead(keystate,2)){c = pgm_read_byte(keymap->shift_3 + k);}
+				else {c = pgm_read_byte(keymap->noshift_3 + k);}
+			 }
+			 
+		else {
+				if(bitRead(keystate,1) || bitRead(keystate,2)){c = pgm_read_byte(keymap->shift_1 + k);}
+				else {c = pgm_read_byte(keymap->noshift_1 + k);}
+			 }
+	
+		// Jump to end if key code is an ignored key
+		if (c != IGNORE_KEYCODE){
+			// Differential shift conversion during key press
+			
+			if (c >= 64  && digitalRead(ANALOG_SW_DATA)){
+				c -= 64;
+				if bitRead(keystate,2){
 				digitalWrite (ANALOG_SW_DATA,LOW);
 				setswitch(25);
 				}
-				else if bitRead(ks,1){
+				else if bitRead(keystate,1){
 				digitalWrite (ANALOG_SW_DATA,LOW);
 				setswitch(39);
 				}
@@ -158,23 +119,32 @@ void c64key(uint8_t k,byte ks)
 				// Set cross switch key
 				digitalWrite(ANALOG_SW_DATA,HIGH);
 				setswitch(c);
+				// Delay for C64 scanning speed
 				delayMicroseconds(16000);
 				// Restore shift state to match keystate
-				digitalWrite (ANALOG_SW_DATA,bitRead(ks,1));
+				digitalWrite (ANALOG_SW_DATA,bitRead(keystate,1));
 				setswitch(39);
-				digitalWrite (ANALOG_SW_DATA,bitRead(ks,2));
+				digitalWrite (ANALOG_SW_DATA,bitRead(keystate,2));
 				setswitch(25);
 				}
-			
-			else if (c > 63){
-				c -= 63;
+			// Differential shift conversion is not needed during key break
+			else if (c >= 64){
+				c -= 64;
 				setswitch(c);}
+			// Normal Key press/break
 			else {setswitch(c);}
-		}		
+		}
+	// Reset switch state pin to default high state (Key press).
 	digitalWrite(ANALOG_SW_DATA ,HIGH);
 
 }
 
+void resetMT88(void){
+		digitalWrite(ANALOG_SW_RESET,HIGH);
+		digitalWrite( ANALOG_SW_STROBE, HIGH);
+		digitalWrite(ANALOG_SW_RESET,LOW);
+		digitalWrite( ANALOG_SW_STROBE, LOW);	
+}
 
 // The ISR for the external interrupt
 void ps2interrupt(void)
@@ -184,7 +154,7 @@ void ps2interrupt(void)
 	static uint32_t prev_ms=0;
 	uint32_t now_ms;
 	uint8_t n, val;
-	val = digitalRead(DataPin);
+	val = digitalRead(data_pin);
 	now_ms = millis();
 	if (now_ms - prev_ms > 250) {
 		bitcount = 0;
@@ -203,31 +173,38 @@ void ps2interrupt(void)
 			buffer[i] = incoming;
 			head = i;
 		}
-	
-	uint8_t s = get_scan_code();
+
+		uint8_t t = tail;
+		t++;
+		if (t >= BUFFER_SIZE) t = 0;
+		uint8_t s = buffer[t];
+		tail = t;
+		
+		// Switch key maps
+		if( s == KEY_MAP_1){currkeymap = 1;}
+		else if (s == KEY_MAP_2){currkeymap = 2;}
+		else if (s == KEY_MAP_3){currkeymap = 3;}
 		
 		// Key released. Set MT data pin low for next keycode.
 		if (s == 0xF0){
 			digitalWrite(ANALOG_SW_DATA ,0);
 			}
 		
-		// Restore Key. Set A0 to ground by setting output mode
-		// Set A0 to float by setting input mode
+		// Restore Key. Set NMI_PIN to ground by setting output mode
+		// Set NMI_PIN to float by setting input mode
 		else if (s == RESTORE_KEY){
-			if (digitalRead(ANALOG_SW_DATA)){pinMode(A0,OUTPUT);}
-			else {pinMode(A0,INPUT);}
+			if (digitalRead(ANALOG_SW_DATA)){pinMode(NMI_PIN,OUTPUT);}
+			else {pinMode(NMI_PIN,INPUT);}
 			}
 			
 		//Reset MT and keystate with MT_RESET key.
 		else if (s == MT_RESET){
-			digitalWrite(2,HIGH);
-			digitalWrite( ANALOG_SW_STROBE, HIGH);
-			digitalWrite(2,LOW);
-			digitalWrite( ANALOG_SW_STROBE, LOW);
+			resetMT88();
 			keystate = 0;		
 		}
 		// PS2 Extended key code. Set keystate(bit 0) for next keycode.
 		else if (s == 0xE0){
+			// Not yet implemented
 			//bitSet(keystate,0);
 		}
 
@@ -235,35 +212,36 @@ void ps2interrupt(void)
 		else if (s == 0x12){
 			if (digitalRead(ANALOG_SW_DATA) && !bitRead(keystate,1)){
 				bitSet(keystate,1);
-				c64key(s,keystate);}
+				c64key(s);}
 			else if (!digitalRead(ANALOG_SW_DATA) && bitRead(keystate,1)){
 				bitClear(keystate,1);
-				c64key(s,keystate);
+				c64key(s);
 			}
 		}
 		// Match keystate (bit 2) for right shift map to MT data pin. 
 		else if (s == 0x59){
 			if (digitalRead(ANALOG_SW_DATA) && !bitRead(keystate,2)){
 				bitSet(keystate,2);
-				c64key(s,keystate);}
+				c64key(s);}
 			else if (!digitalRead(ANALOG_SW_DATA) && bitRead(keystate,2)){
 				bitClear(keystate,2);
-				c64key(s,keystate);
+				c64key(s);
 			}
 		}
 		//Caps lock keystate(bit 3 & 4).
+		//Two bits are used due to the toggle nature of CAPS LOCK
 		else if (s == 0x58){
 				if (bitRead(keystate,4)){
 					keystate ^= 1 << 3; // Flip state of bit 3
 					digitalWrite(ANALOG_SW_DATA ,bitRead(keystate,3));
-					c64key(0x12,keystate);
+					c64key(0x12);
 					bitClear(keystate,4);
 					}
 				else {bitSet(keystate,4);}	
 				}
 		
 		// Normal keycode
-		else if (s < PS2_KEYMAP_SIZE){c64key(s,keystate);}
+		else if (s < PS2_KEYMAP_SIZE){c64key(s);}
 					
 	bitcount = 0;
 	incoming = 0;
@@ -272,13 +250,28 @@ void ps2interrupt(void)
 }
 	
 	
-void C64keyboard::begin(uint8_t data_pin, uint8_t irq_pin, const PS2Keymap_t &map) {
+void C64keyboard::begin(const PS2Keymap_t &map) {
   uint8_t irq_num=255;
 
-  DataPin = data_pin;
+  data_pin = DATA_PIN;
+  irq_pin = IRQ_PIN;
   keymap = &map;
 
   // initialize the pins
+  
+  for ( int currentPin = ANALOG_SW_ARRAY_START; currentPin <= ANALOG_SW_ARRAY_END; ++currentPin) {
+    pinMode( currentPin, OUTPUT);
+  }
+ 
+  pinMode( ANALOG_SW_AX3, OUTPUT);  // ANALOG_SW_AX3 (AX3) is separate as it is used only for conversion of X12/X13 into X6/X7
+  pinMode( ANALOG_SW_STROBE, OUTPUT);  // MT88XX strobe
+  pinMode( ANALOG_SW_DATA, OUTPUT);   // MT88XX data
+  pinMode( ANALOG_SW_RESET, OUTPUT); // MT88XX reset
+  pinMode(ANALOG_SW_DATA, OUTPUT);  //MT88XX data
+  pinMode(NMI_PIN,INPUT); // C64 NMI
+  
+  resetMT88();
+  
 #ifdef INPUT_PULLUP
   pinMode(irq_pin, INPUT_PULLUP);
   pinMode(data_pin, INPUT_PULLUP);
@@ -290,7 +283,7 @@ void C64keyboard::begin(uint8_t data_pin, uint8_t irq_pin, const PS2Keymap_t &ma
 #endif
 
 #ifdef CORE_INT_EVERY_PIN
-  irq_num = irq_pin;
+  irq_num = IRQ_PIN;
 
 #else
   switch(irq_pin) {
