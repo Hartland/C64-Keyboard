@@ -29,7 +29,10 @@ Hardware
 Documents
 ---------
 * MT88XX.xml
-	- Basic wiring chart.
+	- Basic wiring charts. Separate tabs for MT8808 and MT8812/MT8816.
+
+* MT8812.pdf and MT8812-16.pdf
+	- PDF versions for the wiring charts
 	
 * KEYBIN.xml
 	- MT88XX AY/AX - Commodore header table.
