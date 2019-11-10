@@ -1,6 +1,6 @@
-============================
+
 C64 PS2 Keyboard
-============================
+
 
 
 This project is designed to allow a PS2 keyboard to be used
