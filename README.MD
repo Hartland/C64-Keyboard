@@ -58,7 +58,7 @@ Usage
 
 * Using the Arduino IDE upload the sketch: C64_keyboard.ino : into your Arduino.
 
-** Systems options are located in the C64keyboard.h header file. The MT8808 definition is very important. Set to true if using a MT8808 or flase if using MT8812-16.**
+* ** Systems options are located in the C64keyboard.h header file. The MT8808 definition is very important. Set to true if using a MT8808 or flase if using MT8812-16.**
 
 
 !!!POWER REQUIREMENTS!!!!
