@@ -56,9 +56,9 @@ Usage
 
 * USB Keyboards need USBHOST library to be installed into Arduino IDE library(USB NOT IMPLEMTED YET)
 
-* Using the Arduino IDE upload the sketch: C64_keyboard.ino : into your Arduino.
+* Using the Arduino IDE upload the sketch: C64_keyboard.ino : into your Arduino IDE.
 
-* ** Systems options are located in the C64keyboard.h header file. The MT8808 definition is very important. Set to true if using a MT8808 or flase if using MT8812-16.**
+* **SYSTEMS OPTIONS ARE LOCATED IN THE C64KEYBOARD.H HEADER FILE. THE MT8808 DEFINITION IS VERY IMPORTANT. SET TO TRUE IF USING A MT8808 OR FLASE IF USING MT8812-16.**
 
 
 !!!POWER REQUIREMENTS!!!!
