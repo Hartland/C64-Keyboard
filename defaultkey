@@ -1,35 +1,33 @@
-C64 Key			PS2 Key
+C64 Key			  PS2 Key
 -----------------------
 
-C=				Windows
+C=				    Windows
 
-RUN/STOP		ALT
+RUN/STOP		  ALT
 
-RESTORE			TAB
+RESTORE			  TAB
 
 ` (TIde ~)		@
 
-"				SHIFT 2
+"				     SHIFT 2
 
-+				KEYPAD +
++				     KEYPAD +
 
-*				KEYPAD *
+*				     KEYPAD *
 
 ARROW UP		CURSOR UP
 
 ARROW LEFT		CURSOR LEFT
 
-DEL				BACKSPCAE and DEL
+DEL				  BACKSPCAE and DEL
 
-POUND			\
+POUND			  \
 
 CLR/HOME		HOME
 
 
 The Scroll Lock LED will light when keymap 2 is selected
 
-
-The default keymap 2 has the cursor keys fuction in all directions and the backspaceis the arrow left key.
 
 
   
