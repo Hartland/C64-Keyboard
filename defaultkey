@@ -1,29 +1,29 @@
 C64 Key			  PS2 Key
 -----------------------
 
-C=				    Windows
+C=                Windows
 
-RUN/STOP		  ALT
+RUN/STOP          ALT
 
-RESTORE			  TAB
+RESTORE           TAB
 
-` (TIde ~)		@
+` (TIde ~)        @
 
-"				     SHIFT 2
+"                 SHIFT 2
 
-+				     KEYPAD +
++                 KEYPAD +
 
-*				     KEYPAD *
+*                 KEYPAD *
 
-ARROW UP		CURSOR UP
+ARROW UP          CURSOR UP
 
-ARROW LEFT		CURSOR LEFT
+ARROW LEFT        CURSOR LEFT
 
-DEL				  BACKSPCAE and DEL
+DEL               BACKSPACE and DEL
 
-POUND			  \
+POUND             \
 
-CLR/HOME		HOME
+CLR/HOME          HOME
 
 
 The Scroll Lock LED will light when keymap 2 is selected
