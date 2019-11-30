@@ -16,6 +16,8 @@ Hardware
 --------
 * Arduino Uno, Nano, or DUE. DUE required for USB keyboard (USB NOT IMPLEMENTED YET).
 
+* **It is strongly recommended to use DUE for USB only. The cost of the DUE and its required level shifters for PS2 connections make it impractical for PS2 implementation.** 
+
 * MT8808, MT8812 or MT8816 Analog Cross switch
 
 * 20 pin female header or male header with cable (PATA cable will work)
