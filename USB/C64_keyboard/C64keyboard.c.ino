@@ -80,8 +80,7 @@ void debugkey (uint8_t c){
     }
     Serial.print("  Key Press: ");
     Serial.println (kpress);
-    //Serial.print("  modbuff: ");
-    //Serial.println (modbuff);
+ 
    
   }
     
@@ -106,7 +105,6 @@ void c64key() {
    // Restore key function   
   if (kc == RESTORE_KEY){
       if (kpress){pinMode (NMI_PIN,INPUT);
-      Serial.println ("Restore down");
      }
       if (!kpress) {pinMode (NMI_PIN, OUTPUT);
         digitalWrite (NMI_PIN,LOW);
@@ -177,7 +175,6 @@ void c64key() {
       
      else {
         setswitch(39,HIGH);
-        Serial.println ("SET HIGH");
       }
       // Set cross switch key
       setswitch(c,kpress);
