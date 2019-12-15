@@ -80,14 +80,12 @@ void debugkey (uint8_t c){
     }
     Serial.print("  Key Press: ");
     Serial.println (kpress);
- 
-   
-  }
+}
     
 void processmod (){
   for (int i=0;i < 8; i++){
   if (bitRead(modbuff,i) != bitRead(mod,i)){
- int key = MODKEYS[i];
+    int key = MODKEYS[i];
      setswitch(key,kpress);
     }
   }
@@ -102,15 +100,7 @@ void c64key() {
    if (mod != modbuff) {processmod();
    c = IGNORE_KEYCODE;}
 
-   // Restore key function   
-  if (kc == RESTORE_KEY){
-      if (kpress){pinMode (NMI_PIN,INPUT);
-     }
-      if (!kpress) {pinMode (NMI_PIN, OUTPUT);
-        digitalWrite (NMI_PIN,LOW);
-        }
-      c = IGNORE_KEYCODE;
-   }
+ 
     
 // MT reset function    
     if (kc == MT_RESET) {
