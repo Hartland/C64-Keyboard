@@ -24,17 +24,9 @@
 */
 
 #include "C64Keyboard.h"
-#include <address.h>
-#include <adk.h>
-#include <confdescparser.h>
-#include <hid.h>
-#include <hidboot.h>
-#include <hidusagestr.h>
-#include <KeyboardController.h>
-#include <MouseController.h>
-#include <parsetools.h>
-#include <Usb.h>
-#include <usb_ch9.h>
+
+#include "src/USBHost/KeyboardController.h"
+
 
 
 // Initialize USB Controller

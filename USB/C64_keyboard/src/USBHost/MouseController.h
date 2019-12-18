@@ -19,7 +19,7 @@
 #ifndef MOUSE_CONTROLLER_H
 #define MOUSE_CONTROLLER_H
 
-#include <hidboot.h>
+#include "hidboot.h"
 
 enum MouseButton {
 	LEFT_BUTTON   = 0x01,
