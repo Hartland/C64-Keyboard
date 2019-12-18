@@ -10,7 +10,7 @@ Dependencies
 ------------
 * PS2KeyAdvanced Arduino library for use with PS2 keyboard. Install through the IDE library manager.
 
-* A slightly modified USBHOST Arduino library is included for use with USB keyboard. C64USBHost will need to be placed into your Arduino library directory.
+* A slightly modified USBHOST Arduino library is included for use with USB keyboard.
 
 
 Hardware
@@ -62,7 +62,7 @@ Usage
 * PS2 keyboards use the PS2KeyAdvanced library.
 	-Use Manage Library to search for and install PS2KeyAdvanced.
 
-* USB Keyboards use the included modified USBHOST.The C64USBHost library will need to be placed into your Arduino library directory. ex:\Documents\Arduino\libraries
+* USB Keyboards use the included modified USBHOST.
 
 * Using the Arduino IDE upload the sketch: *C64_keyboard.ino* into your Arduino.
 
@@ -84,6 +84,9 @@ TODO
 * Write spreadsheet/program to ease creation of keymaps
 
 
+Version 0.911
+-------------
+* USB IDE library requirement removed
 	
 Version 0.91
 ------------
