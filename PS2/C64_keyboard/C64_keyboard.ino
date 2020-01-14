@@ -22,7 +22,7 @@
 */
 
 #include <PS2KeyAdvanced.h>
-#include "C64Keyboard.h"
+#include "C64keyboard.h"
 
 
 PS2KeyAdvanced keyboard;

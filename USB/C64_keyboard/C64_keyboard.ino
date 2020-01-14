@@ -23,7 +23,7 @@
 
 */
 
-#include "C64Keyboard.h"
+#include "C64keyboard.h"
 
 #include "src/USBHost/KeyboardController.h"
 
