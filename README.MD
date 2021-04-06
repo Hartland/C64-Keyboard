@@ -8,37 +8,43 @@ This project is designed to allow a PS2/USB keyboard to be used with a Commodore
 
 Dependencies
 ------------
-* PS2KeyAdvanced Arduino library for use with PS2 keyboard. Install through the IDE library manager.
+* PS2KeyAdvanced Arduino library for use with PS2 keyboard. Install through the IDE library manager
 
-* A slightly modified USBHOST Arduino library is included for use with USB keyboard.
+* A slightly modified USBHOST Arduino library is included for use with USB keyboard. This will need to be placed in the Arduino library directory.
+
+* The SEEED will need its board driver installed into the Arduino IDE. See manufacturers instructions.
 
 
 Hardware
 --------
-* Arduino Uno, Nano, or DUE. DUE required for USB keyboard.
+* Arduino Uno, Nano, or SEEED XIAO. SEEED required for USB keyboard
 
-* **It is strongly recommended to use DUE for USB only. The cost of the DUE and its required level shifters for PS2 connections make it impractical for PS2 implementation.** 
-
-* MT8808, MT8812 or MT8816 Analog Switch Array.
+* MT8808, MT8812 or MT8816 Analog Switch Array
 
 * 20 pin female header or male header with cable (PATA cable will work)
 
 * Arduino shield PCB. 
-	- Any universal PCB that will line up correctly.
+	- Any universal PCB that will line up correctly
 
 * PS2 keyboard 
-	- matching socket or cut/strip and directly wire.
+	- matching socket or cut/strip and directly wire
 	
 * USB keyboard 
-	- Requires DUE and in most cases, USB Type A to USB Micro Type B cable/adapter.
-	- Keyboards that connect through internal USB hubs are not supported.This is a limitation of the USBHost library.
-	- Restore (NMI) key requires a NPN transistor (2n3904 suggested) and resistor (10K).
+	- Requires SEEED and in most cases, USB Type C to USB A or Micro Type B cable/adapter
+	- Keyboards that connect through internal USB hubs are not supported.This is a limitation of the USBHost library
+	- Restore (NMI) key requires a NPN transistor (2n3904 suggested) and resistor (10K)
+
+DUE - DEPRECIATED
+---------
+
+*  **DUE is included for archive only and will not be updated. The SEEED XIAO is recommended for USB **
 
 
+ 
 Documents
 ---------
 * MT88XX.xml
-	- Basic wiring charts. Separate tabs for MT8808 and MT8812/MT8816. Wiring charts are also on the schematics.
+	- Basic wiring charts. Separate tabs for MT8808 and MT8812/MT8816. Wiring charts are also on the schematics
 
 * MT8808.pdf and MT8812-16.pdf MT8808 is separate due to a different IC pinout to MT8812-16
 	- PDF versions for the wiring charts
@@ -72,22 +78,31 @@ Usage
 !!!POWER REQUIREMENTS!!!!
 -------------------------
 
-* The Arduino UNO and Nano can be powered from the C64 keyboard header Pin 4
+* The Arduino UNO, Nano, and SEEED can be powered from the C64 keyboard header Pin 4
 
 * **The Arduino DUE CANNOT BE POWERED FROM PIN 4!! Use the + side of C10 (+10V) connected to the DUE barrel power connector instead.**
 
 
 TODO
 ----
-* Code cleanup
+* Create schematic diagrams for SEEED build. Wiring diagrams are included with 0.920
 
-* Write spreadsheet/program to ease creation of keymaps
+* Create spreadsheet/program to automatically create key maps
 
+* Publish pre-compiled binary files
+ 
+
+
+Version 0.920
+-------------
+* Add SEEED XIAO board for USB keyboards
+
+* Document DUE is for archive only
 
 Version 0.911
 -------------
 * USB IDE library requirement removed
-	
+
 Version 0.91
 ------------
 * USB module published
