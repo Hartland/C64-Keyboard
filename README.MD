@@ -10,14 +10,16 @@ Dependencies
 ------------
 * PS2KeyAdvanced Arduino library for use with PS2 keyboard. Install through the IDE library manager
 
-* A slightly modified USBHOST Arduino library is included for use with USB keyboard. This will need to be placed in the Arduino library directory.
+* SEEED XIAO uses slightly modified USBHOST Arduino library (C64_USB_Host_Library_SAMD). This directory will need to be copied into the Arduino library directory.
 
-* The SEEED will need its board driver installed into the Arduino IDE. See manufacturers instructions.
+* SEEED XIAO will need its board driver installed into the Arduino IDE. See manufacturers instructions.
+
+* DUE also uses a modified USBHOST library but it is included with the source and does not need to be installed in the library directory.
 
 
 Hardware
 --------
-* Arduino Uno, Nano, or SEEED XIAO. SEEED required for USB keyboard
+* Arduino Uno, Nano, DUE, or SEEED XIAO. SEEED XIAO or DUE required for USB keyboard
 
 * MT8808, MT8812 or MT8816 Analog Switch Array
 
@@ -29,37 +31,30 @@ Hardware
 * PS2 keyboard 
 	- matching socket or cut/strip and directly wire
 	
-* USB keyboard 
-	- Requires SEEED and in most cases, USB Type C to USB A or Micro Type B cable/adapter
+* USB keyboard - **SEEED XIAO is highly recommended as the DUE is overkill for this project** 
+	- Requires SEEED XIAO or DUE. In most cases, the SEED requires USB Type C to USB A or Micro Type B cable/adapter
 	- Keyboards that connect through internal USB hubs are not supported.This is a limitation of the USBHost library
 	- Restore (NMI) key requires a NPN transistor (2n3904 suggested) and resistor (10K)
-
-DUE - DEPRECIATED
----------
-
-*  **DUE is included for archive only and will not be updated. The SEEED XIAO is recommended for USB **
-
 
  
 Documents
 ---------
-* MT88XX.xml
-	- Basic wiring charts. Separate tabs for MT8808 and MT8812/MT8816. Wiring charts are also on the schematics
-
-* MT8808.pdf and MT8812-16.pdf MT8808 is separate due to a different IC pinout to MT8812-16
-	- PDF versions for the wiring charts
 	
-* KEYBIN.xml
+* KEYBIN.PDF
 	- MT88XX AY/AX. These are the hard wired Commodore keyboard header position values used in keyboard mapping.
 	- The position values are placed on the keymap where the PS2/USB keyboard value matches the Commodore key desired.
-	- The AX2-1-0 AY2-1-0 and logic hole hole columns are for reference and not needed to make keymaps. 
+	- The AX2-1-0 AY2-1-0 and logic hole hole columns are for reference and not needed to make keymaps.
+	- The logic hole column only applies to the MT8812-16.
 	
-* DEFAULTKEY
-	- Included key map document
+* DEFAULTKEY.TXT
+	- Key map of special function keys (EX. C= key mapped to Windows key)
 	
-* Schematic_MT8812-16.pdf and Schematic_MT8808.PDF.These are located in the PS2/doc and USB/doc folders.
-	-Schematic diagrams. MT8808 is separate due to a different IC pinout to MT8812-16
-
+* USB_KEY_CODES.TXT
+	- Public Domain copy of USB HID scan codes.
+	
+* Schematic PDF files
+	- Include wiring charts and are located in the PS2 and USB folders under the appropriate board type
+	- MT8808 and MT8812-16 are separate due to a different MT88xx pinouts 
 
 
 Usage
@@ -72,7 +67,7 @@ Usage
 
 * Using the Arduino IDE upload the sketch: *C64_keyboard.ino* into your Arduino.
 
-* **SYSTEM OPTIONS ARE LOCATED IN THE *C64KEYBOARD.H* HEADER FILE. THE MT8808 DEFINITION IS VERY IMPORTANT. SET TO TRUE IF USING A MT8808 OR FLASE IF USING MT8812-16.**
+* **SYSTEM OPTIONS ARE LOCATED IN THE *C64KEYBOARD.H* HEADER FILE. THE MT8808 DEFINITION IS VERY IMPORTANT. SET TO TRUE IF USING A MT8808 OR FALSE IF USING MT8812-16.**
 
 
 !!!POWER REQUIREMENTS!!!!
@@ -85,12 +80,17 @@ Usage
 
 TODO
 ----
-* Create schematic diagrams for SEEED build. Wiring diagrams are included with 0.920
 
 * Create spreadsheet/program to automatically create key maps
 
 * Publish pre-compiled binary files
  
+
+Version 1.00
+-------------
+* Updated and cleaned up all schematics and documents. All wiring charts are now on the schematics.
+
+* DUE has been brought out of archive status and will be part of future updates.
 
 
 Version 0.920

@@ -1,7 +1,7 @@
 /*
   C64keyboard - Commodore Keyboard library
 
-  Copyright (c) 2019 Hartland PC LLC
+  Copyright (c) 2022 Hartland PC LLC
   Written by Robert VanHazinga
 
 
