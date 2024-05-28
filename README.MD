@@ -1,6 +1,11 @@
 ## C64 PS2/USB Keyboard
 
 
+# !!! VERSION 2 IS CURRENTLY BEING DEVELOPED. VERSION 1 IS IN THE ARCHIVE FOLDER !!!
+# !!! PLEASE USE VERSION 1 FOR MAIN STREAM USE !!!
+# !!! EVENTUALLY VERSION2 WILL WORK WITH VERSION 1 HARDWARE !!!
+
+
 
 
 This project is designed to allow a PS2/USB keyboard to be used with a Commodore 64 in place of the original Commodore keyboard.
