@@ -1,0 +1,20 @@
+The wiring difference between Version 1 and 2 are the address pins.
+
+In version 1 the lowest pin for AX and AY was the highest.
+5-AY2
+6-AY1
+7-AY0
+
+8-AX2
+9-AX1
+10-AX0
+
+Version 2 is the oppsite:
+
+5-AY0
+6-AY1
+7-AY2
+
+8-AX0
+9-AX1
+10-AX2
