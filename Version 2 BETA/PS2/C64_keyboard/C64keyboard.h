@@ -41,16 +41,11 @@ SOFTWARE.
 extern PS2KeyAdvanced keyboard;
 extern mt88xx array;
 
-#define debug   true  //Set true for serial monitor of C64 keycodes and PS/2 keycodes
-
-
-//Scan code value to enable a key map. Default is key map 1.
-#define KEY_MAP_1				0x69 // (DEC 105) F9
-#define KEY_MAP_2				0x6A // (DEC 106) F10
+#define debug   false  //Set true for serial monitor of C64 keycodes and PS/2 keycodes
 
 
 //PS2 communication pins
-#define DATA_PIN				11 // Data pin for PS2 keyboard
+#define DATA_PIN				12 // Data pin for PS2 keyboard
 #define IRQ_PIN					3  // Interrupt pin for PS2 keyboard
 
 //Scan code value to enable a key map. Default is key map 1.

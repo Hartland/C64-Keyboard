@@ -3,7 +3,11 @@ PS2KeyAdvanced - This can be found in the Arduino IDE library management
 
 
 MT88xx_Controller library - this can be found in github at : https://github.com/Hartland/MT88xx_Controller
+
 MT88xx_Controller library will need to be placed in the Arduino library directory.
+
 In windows this is located in your    documents/Arduino/libraries   directory.
+
 Remember to copy the src folder and files into a folder named MT88xx_Controller.
+
 documents/Arduino/libraries/MT88xx_Controller/src/(the  header and cpp files)

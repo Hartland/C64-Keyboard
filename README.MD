@@ -1,11 +1,15 @@
 
 
 
-## VERSION 2 IS CURRENTLY BEING DEVELOPED. 
-## PLEASE USE VERSION 1 FOR MAINSTREAM USE
-## EVENTUALLY VERSION 2 WILL WORK WITH VERSION 1 HARDWARE
-## ESSENTAILLY THE AY & AX ADDRESS PINS ARE MIRRORED
-## SEE WIRING DIFFERENCE TEXT FOR DETAILS ON WHAT PINS TO SWAP TO USE VERSION 2 ON VERSION 1 HARDWARE
+## VERSION 2 IS CURRENTLY BEING DEVELOPED.
+
+## VERSION 2 is now compatible with previous version hardware
+
+## Note: The MT88xx control library is required for Version 2. It is found in this repository.
+
+* Version 2 has stability enhancements and is recommended to try out on current hardware.
+* The PS/2 V2 in this repository is currently setup to work with the PCB available on PCBWAY under shared projects.
+* Be sure to read the library requirements text to get the MT88xx control library requirement set up.
 
 
 ## C64 PS2/USB Keyboard (VERSION 1)

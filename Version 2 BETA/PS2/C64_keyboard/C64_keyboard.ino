@@ -29,19 +29,21 @@ C64keyboard ckey;
 mt88xx array;
 
 
-
 void setup() {
-  // Configure MT88XX control library
-  array.setModel(8); // Chip model. MT8808 is default. MT8808 = 8  MT8812 = 12  MT8816 = 16
-  array.setErrorLED(13, true); // Error led pin, enable/disable
-  array.setControlPins(4, 2, 5, 8, A1, 12); // Data, Strobe, AY start, AX Start, AX3, Reset | Both AY and AX consist of 3 sequential pins beginning at AY & AX start.
-  array.begin();
-
   // Configure the keyboard library
-  keyboard.begin( DATA_PIN, IRQ_PIN );
+  keyboard.begin( DATA_PIN, IRQ_PIN ); // Data pin, clock pin
   keyboard.setNoRepeat (1);
   keyboard.setNoBreak (0);
   keyboard.typematic(0x1F, 0x03);
+  // Configure MT88XX control library
+  array.setModel(8); // Chip model. MT8808 is default. MT8808 = 8  MT8812 = 12  MT8816 = 16
+  array.setErrorLED(13, false); // Error led pin, enable/disable
+  uint8_t axPins[3] = {10, 9, 8}; // Define AX pins
+  uint8_t ayPins[3] = {7, 6, 5}; // Define AY pins
+  array.setControlPins(2, 4, axPins, ayPins, 11, 13); // Data, Strobe, AX pins, AY pins, AX3, Reset
+  array.begin();
+
+  
   // Start C64 keyboard
   ckey.begin();
  if (debug) {Serial.begin( 115200 );}
@@ -51,7 +53,10 @@ void setup() {
 void loop() {
   if ( keyboard.available() )
   {
-    ckey.c64key(keyboard.read());
     
-  }
+  ckey.c64key(keyboard.read());
+    
+  
+}
+
 }

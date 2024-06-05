@@ -52,6 +52,7 @@ void debugkey (uint8_t f,uint8_t keyCode,int8_t x,int8_t y,bool mb,bool ik){
 
   
 void C64keyboard::c64key(uint16_t k) {
+
    flags = k >> 8;
    uint8_t keyCode= k & 0xFF;
    SwitchAddress coords = {-1,-1,true};
@@ -158,17 +159,16 @@ if (coords.ax == -1 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
      }
   // Process normal keypress
     if (!ignoreKey){
-       coords.makeBreak = !bitRead(flags,7);
-      array.setSwitch(coords);  
-      }
+        coords.makeBreak = !bitRead(flags,7);
+        array.setSwitch(coords);  
+       }
 
       if (!capslock && !invalidKey){
         if (coords.makeBreak){pressedKeys ++;}
         else {pressedKeys --;}
-        if (pressedKeys <= 0){
+        if (pressedKeys <= 0 || pressedKeys > 4){
           array.resetArray();
-          pressedKeys = 0;
-          
+          pressedKeys = 0;   
         } 
 
       }
