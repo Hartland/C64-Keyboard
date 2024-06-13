@@ -5,7 +5,7 @@
 
 ## VERSION 2 is now compatible with previous version hardware
 
-## Note: The MT88xx control library is required for Version 2. It is found in this repository.
+## Note: The MT88xx control library is required for Version 2. The repository is on Hartland/MT88xx_Controller.
 
 * Version 2 has stability enhancements and is recommended to try out on current hardware.
 * The PS/2 V2 in this repository is currently setup to work with the PCB available on PCBWAY under shared projects.
