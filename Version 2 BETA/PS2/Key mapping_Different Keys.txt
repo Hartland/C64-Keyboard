@@ -31,4 +31,5 @@ CTRL	Tab
 L ARR	~ Tide
 Pound	Backspace
 =	END
+Restore  \
 Keypad Active: + _ *
