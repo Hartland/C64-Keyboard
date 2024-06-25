@@ -46,17 +46,9 @@ void setup() {
   
   // Start C64 keyboard
   ckey.begin();
- if (debug) {Serial.begin( 115200 );}
+ //if (debug) {Serial.begin( 115200 );}
+ Serial.begin (115200);
 }
 
 
-void loop() {
-  if ( keyboard.available() )
-  {
-    
-  ckey.c64key(keyboard.read());
-    
-  
-}
-
-}
+void loop() {if (keyboard.available()){ckey.c64key(keyboard.read());}}

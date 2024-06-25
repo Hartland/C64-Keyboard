@@ -35,8 +35,6 @@ static const C64Keymap_t *keymap = NULL;
 void debugkey (uint8_t f,uint8_t keyCode,int8_t x,int8_t y,bool mb,bool ik){
     Serial.print("Scan Code: ");
     Serial.print (keyCode);
-    Serial.print (" ASCII: ");
-    Serial.print ((char)keyCode);
     Serial.print (" Flags: ");
     Serial.print (f,BIN);
     Serial.print (" AX: ");
@@ -55,18 +53,18 @@ void C64keyboard::c64key(uint16_t k) {
 
    flags = k >> 8;
    uint8_t keyCode= k & 0xFF;
-   SwitchAddress coords = {-1,-1,true};
+   SwitchAddress coords = {99,99,true};
    SwitchAddress tempCoords;
    bool ignoreKey = false;
    bool invalidKey = false;
 
   if (currKeymap == 2) {
      if (bitRead(flags, 6)) { // If shifted
-        coords.ax = pgm_read_byte(&keymap->shift_1[keyCode].ax);
-        coords.ay = pgm_read_byte(&keymap->shift_1[keyCode].ay);
+        coords.ax = pgm_read_byte(&keymap->shift_2[keyCode].ax);
+        coords.ay = pgm_read_byte(&keymap->shift_2[keyCode].ay);
     } else { // If not shifted
-        coords.ax = pgm_read_byte(&keymap->noshift_1[keyCode].ax);
-        coords.ay = pgm_read_byte(&keymap->noshift_1[keyCode].ay);
+        coords.ax = pgm_read_byte(&keymap->noshift_2[keyCode].ax);
+        coords.ay = pgm_read_byte(&keymap->noshift_2[keyCode].ay);
     }
   }
 
@@ -94,7 +92,7 @@ void C64keyboard::c64key(uint16_t k) {
       }
 
 // Process ignored key codes
-if (coords.ax == -1 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
+if (coords.ax == 99 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
     invalidKey = true;}
 
 // MT reset function    
@@ -104,7 +102,7 @@ if (coords.ax == -1 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
     } 
 
 // Restore key function   
-    if (keyCode == RESTORE_KEY){
+    if (coords.ax == 255){
       if (bitRead (flags,7)){pinMode (NMI_PIN,INPUT);
       
       pressedKeys --;
@@ -129,9 +127,9 @@ if (coords.ax == -1 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
 
         
  // Differential shift conversion during key press
-    if (coords.ax >= 10 && !ignoreKey) {
+    if (coords.ay >= 10 && !ignoreKey) {
       
-        coords.ax -= 10;
+        coords.ay -= 10;
         if (rshift || lshift) {
           tempCoords = {6,4,false};
           array.setSwitch(tempCoords);
@@ -143,7 +141,7 @@ if (coords.ax == -1 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
         tempCoords = {1,7,true};
         array.setSwitch(tempCoords);
       }
-
+      array.setSwitch(coords);
       // Restore shift state to match keystate
        if (bitRead (flags,7)){ 
         tempCoords = {1,7,lshift};

@@ -27,40 +27,31 @@ SOFTWARE.
 #ifndef C64keyboard_h
 #define C64keyboard_h
 
-#if defined(ARDUINO) && ARDUINO >= 100
+
 #include "Arduino.h"
-#else
-#include "WProgram.h"
-#endif
-#define C64_KEYMAP_SIZE 	   132 // Size of each array in the key maps
 #include <mt88xx.h>
 #include <PS2KeyAdvanced.h>
 #include "keymapping.h"
 
-
 extern PS2KeyAdvanced keyboard;
 extern mt88xx array;
 
-#define debug   false  //Set true for serial monitor of C64 keycodes and PS/2 keycodes
 
+
+#define debug           false  //Set true for serial monitor of C64 keycodes and PS/2 keycodes
 
 //PS2 communication pins
-#define DATA_PIN				12 // Data pin for PS2 keyboard
-#define IRQ_PIN					3  // Interrupt pin for PS2 keyboard
-
+#define DATA_PIN				12 // Data pin for PS2 keyboard. Default 12
+#define IRQ_PIN					3  // Interrupt pin for PS2 keyboard. Default 3
 //Scan code value to enable a key map. Default is key map 1.
-#define KEY_MAP_1				0x69 // (DEC 105) F9
-#define KEY_MAP_2				0x6A // (DEC 106) F10
-
-
+#define KEY_MAP_1				105 // Default 105 F9
+#define KEY_MAP_2				106 // Default 106 F10
 //C64 NMI setup
-#define NMI_PIN           A0 //Analog pin 0
-#define RESTORE_KEY       0x1D // (DEC 29) Tab acts as Restore key
-
+#define NMI_PIN         A0 // Restore key I/O pin. Default Analog pin 0
 // Key map value for capslock
-#define CAPSLOCK_KEY    0x03 // (DEC 3) CapsLock key 
-
-#define MT_RESET 0x6c
+#define CAPSLOCK_KEY    3 // Capslock Key. Default 3
+// Key map value for array reset
+#define MT_RESET        108 // Array reset key. Default 0x6c F12
 
 
 class C64keyboard {
