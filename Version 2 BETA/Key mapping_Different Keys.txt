@@ -1,0 +1,41 @@
+Keys that differ from modern keyboard markings. 
+PS/2 - F9 selects Key Map 1
+PS/2 - F10 selects Key Map 2 (Scroll Lock LED will lite)
+USB  - Scroll Lock toggles Keymap 1 and 2
+
+Keymap 1 Symbolic
+
+C64		Modern
+Left Arrow	Left Arrow
+CTRL		CTRL
+RUN		ALT
+C=		WIN
++		=
+-		-
+Pound		~Tide
+Home		Home
+DEL		Back Space & Delete
+*		]
+Up arrow	Up arrow
+=		\
+Horz Cursor	Right Arrow
+Vert Cursor	Down Arrow
+@		]
+
+Keypad Active keys: + - * / Enter
+
+
+Keymap 2 Positional
+C64		Modern
++		-
+-		=
+@		[
+*		]
+;		' (Quote Key)
+Run		Ctrl
+C=		ALT/Win
+CTRL		Tab
+L ARR		~ Tide
+Pound		Backspace
+=		END
+Keypad Active: + _ *
