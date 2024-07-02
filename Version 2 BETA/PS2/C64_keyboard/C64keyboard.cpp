@@ -102,7 +102,7 @@ if (coords.ax == 99 || keyCode > C64_KEYMAP_SIZE){ignoreKey = true;
     } 
 
 // Restore key function   
-    if (coords.ax == 255){
+    if (coords.ax == 101){
       if (bitRead (flags,7)){pinMode (NMI_PIN,INPUT);
       
       pressedKeys --;
