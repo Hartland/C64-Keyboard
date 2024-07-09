@@ -30,7 +30,6 @@ bool lshift=false, rshift=false, capslock=false;
 int pressedKeys = 0;
 bool keyMap2 = false;
 static const C64Keymap_t *keymap = NULL;
-//SwitchAddress modKeys[8] = {{7,2},{1,7},{7,7},{7,5},{7,2},{6,4},{7,7},{7,5}};
 
 
 
@@ -58,17 +57,18 @@ for (int8_t i = 0; i < 8; i++) {
             return i;
         }
     }
+    return -1;
 }
 
 
 void processMod(uint8_t prevModifier,uint8_t currentModifier) {
 
-    SwitchAddress tempCoords;
-    const Coordinates* modKeys = keyMap2 ? modKeyMap2 : modKeyMap1;
+  SwitchAddress tempCoords;
+  const Coordinates* modKeys = keyMap2 ? modKeyMap2 : modKeyMap1;
 
-    //Determine changed bit in modifier buffer
-    int indice = bitPos(prevModifier ^ currentModifier);
-
+  //Determine changed bit in modifier buffer
+  int indice = bitPos(prevModifier ^ currentModifier);
+  if (indice != -1) {
     //Capslock is handled in c64Key function. To be ignored here.
     if (!capslock || (capslock && indice != 1)){
     tempCoords.ax = modKeys[indice].ax;
@@ -79,8 +79,10 @@ void processMod(uint8_t prevModifier,uint8_t currentModifier) {
     array.setSwitch (tempCoords);
     //USBHOST lockup bug fix
     if (USBHOST_MODIFIER_BUFFER_FIX) {Serial.print("");}
+    }
   }
 }
+
 
 void C64keyboard::c64key(uint8_t keyCode,uint8_t prevModifier, uint8_t currentModifier, bool makeBreak) {
    SwitchAddress coords = {99,99,makeBreak};
@@ -152,7 +154,7 @@ void C64keyboard::c64key(uint8_t keyCode,uint8_t prevModifier, uint8_t currentMo
     
 
   // Restore key function   
-    if (coords.ax == 255){
+    if (coords.ax == 101){
       if (makeBreak){digitalWrite (NMI_PIN,HIGH);}
       else {digitalWrite (NMI_PIN,LOW);}
       ignoreKey = true;
